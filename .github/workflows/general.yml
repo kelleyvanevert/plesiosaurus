@@ -28,7 +28,6 @@ jobs:
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
         run: |
           echo "Test $POSTGRES_PORT"
-          psql "postgres://kelley:password@localhost:${POSTGRES_PORT:=5432}" -c "\l"
           psql "postgres://kelley:password@localhost:${POSTGRES_PORT:=5432}/plesiosaurus" -c "select 1"
 
       - name: Checkout repository
