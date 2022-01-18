@@ -11,17 +11,23 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:13
+        image: postgres:13-alpine
         env:
           POSTGRES_USER: "kelley"
           POSTGRES_PASSWORD: ""
           POSTGRES_DB: "plesiosaurus"
         ports:
           - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 10
     env:
       SQLX_VERSION: 0.5.5
       SQLX_FEATURES: postgres
     steps:
+      - name: Test database
+        run: |
+          sudo apt-get install libpq-dev -y
+          psql -U kelley -d plesiosaurus -p 5432 -c "select 1"
+
       - name: Checkout repository
         uses: actions/checkout@v2
 
