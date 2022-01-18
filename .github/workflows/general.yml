@@ -66,7 +66,7 @@ jobs:
       - name: Migrate database
         run: |
           sudo apt-get install libpq-dev -y
-          SKIP_DOCKER=true ./scripts/init_db.sh
+          SKIP_PG_CTL=true ./scripts/init_db.sh
 
       - name: Run cargo test
         uses: actions-rs/cargo@v1
