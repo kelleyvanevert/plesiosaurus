@@ -8,7 +8,7 @@ if [[ -z "${SKIP_PG_CTL}" ]]; then
     fi
 fi
 
-export DATABASE_URL=postgres://kelley:password@localhost:${POSTGRES_PORT:=5432}/plesiosaurus
+export DATABASE_URL=postgres://kelley:password@localhost:5432/plesiosaurus
 
 sqlx database create
 sqlx migrate run

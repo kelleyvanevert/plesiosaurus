@@ -23,12 +23,9 @@ jobs:
       SQLX_VERSION: 0.5.7
       SQLX_FEATURES: postgres
     steps:
-      - name: Test database
-        env:
-          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+      - name: Test database connection
         run: |
-          echo "Test $POSTGRES_PORT"
-          psql "postgres://kelley:password@localhost:${POSTGRES_PORT:=5432}/plesiosaurus" -c "select 1"
+          psql "postgres://kelley:password@localhost:5432/plesiosaurus" -c "select 1"
 
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -72,8 +69,6 @@ jobs:
             --locked
 
       - name: Migrate database
-        env:
-          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
         run: |
           SKIP_PG_CTL=true ./scripts/init_db.sh
 
