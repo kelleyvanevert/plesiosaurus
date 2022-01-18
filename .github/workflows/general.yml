@@ -14,7 +14,7 @@ jobs:
         image: postgres:13-alpine
         env:
           POSTGRES_USER: "kelley"
-          POSTGRES_PASSWORD: ""
+          POSTGRES_PASSWORD: "password"
           POSTGRES_DB: "plesiosaurus"
         ports:
           - 5432:5432
@@ -26,7 +26,8 @@ jobs:
         env:
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
         run: |
-          psql -U kelley -d plesiosaurus -p $POSTGRES_PORT -c "select 1"
+          echo "Test $POSTGRES_PORT"
+          psql "postgres://kelley:password@localhost:${POSTGRES_PORT:=5432}/plesiosaurus" -c "select 1"
 
       - name: Checkout repository
         uses: actions/checkout@v2
