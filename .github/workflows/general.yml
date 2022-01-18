@@ -18,7 +18,6 @@ jobs:
           POSTGRES_DB: "plesiosaurus"
         ports:
           - 5432:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 10
     env:
       SQLX_VERSION: 0.5.5
       SQLX_FEATURES: postgres
