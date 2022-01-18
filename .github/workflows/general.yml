@@ -19,13 +19,14 @@ jobs:
         ports:
           - 5432:5432
     env:
-      SQLX_VERSION: 0.5.5
+      SQLX_VERSION: 0.5.7
       SQLX_FEATURES: postgres
     steps:
       - name: Test database
+        env:
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
         run: |
-          sudo apt-get install libpq-dev -y
-          psql -U kelley -d plesiosaurus -p 5432 -c "select 1"
+          psql -U kelley -d plesiosaurus -p $POSTGRES_PORT -c "select 1"
 
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -69,8 +70,9 @@ jobs:
             --locked
 
       - name: Migrate database
+        env:
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
         run: |
-          sudo apt-get install libpq-dev -y
           SKIP_PG_CTL=true ./scripts/init_db.sh
 
       - name: Run cargo test
