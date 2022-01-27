@@ -9,7 +9,7 @@ use std::net::TcpListener;
 
 use crate::{
     model::{PlesioSchema, Query, RootValue},
-    routes::{health_check, subscribe},
+    routes::{health_check, list_subscriptions, list_subscriptions_fancy, subscribe},
 };
 
 async fn index(schema: web::Data<PlesioSchema>, req: GraphQLRequest) -> GraphQLResponse {
@@ -36,6 +36,11 @@ pub fn run(listener: TcpListener, db_pool: PgPool) -> Result<Server, std::io::Er
             .route("/", web::get().to(index_playground))
             .route("/health_check", web::get().to(health_check))
             .route("/subscriptions", web::post().to(subscribe))
+            .route("/subscriptions", web::get().to(list_subscriptions))
+            .route(
+                "/subscriptions_fancy",
+                web::get().to(list_subscriptions_fancy),
+            )
             .app_data(db_pool.clone())
             .app_data(web::Data::new(graphql_schema.clone()))
     })
