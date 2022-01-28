@@ -24,11 +24,16 @@ async fn index_playground() -> impl Responder {
 }
 
 pub fn run(listener: TcpListener, db_pool: PgPool) -> Result<Server, std::io::Error> {
-    let db_pool = web::Data::new(db_pool);
-
     let graphql_schema = Schema::build(Query, EmptyMutation, EmptySubscription)
         .data(RootValue::new())
+        .data(db_pool.clone())
         .finish();
+
+    println!("{}", &graphql_schema.sdl());
+
+    // web::Data wrapper for actix-web's DI;
+    //  apparently not necessary for async-graphql, not sure why :)
+    let db_pool = web::Data::new(db_pool);
 
     let server = HttpServer::new(move || {
         App::new()
