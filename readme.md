@@ -15,3 +15,9 @@ Resources used:
     - [minimal example](https://github.com/danbruder/async-graphql-sqlx-example)
 
     - [Object macro attributes](https://docs.rs/async-graphql/latest/async_graphql/attr.Object.html) _(Not super sure how to find these in the docs w/ the searchbar...)_
+
+Getting started
+
+- `cargo install --version=0.5.7 sqlx-cli --no-default-features --features postgres`
+- Add a local Postgres instance
+- `cargo run`
